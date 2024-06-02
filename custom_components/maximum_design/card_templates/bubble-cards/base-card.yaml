@@ -1,0 +1,56 @@
+bubble_base_card:
+  type: custom:button-card
+  template:
+    - translation_engine
+  name: |
+    [[[
+      return entity.attributes.friendly_name;
+    ]]]
+  tap_action:
+    action: toggle
+  hold_action:
+    action: more-info
+
+  state:
+    - value: "on"
+      styles:
+        card:
+          - background: '[[[return variables.state_color ?? "var(--color-yellow)"]]]'
+        icon:
+          - color: '[[[return variables.state_color ?? "var(--color-yellow)"]]]'
+
+  styles:
+    grid:
+      - grid-template-areas: '"i n"'
+      - grid-template-columns: min-content 1fr
+    card:
+      - padding: 6px
+      - background: "var(--color-grey)"
+      - box-shadow: none
+      - border-radius: 100px
+    name:
+      - justify-self: start
+      - font-size: 14px
+      - font-weight: 500
+      - color: black
+      - opacity: "0.8"
+      - padding: 2px 0px
+      - pointer-events: none
+    icon:
+      - width: 24px
+      - color: "black"
+    img_cell:
+      - justify-self: start
+      - width: 24px
+      - height: 24px
+      - padding: 8px
+      - margin-right: 8px
+      - background: white
+      - border-radius: 100px
+    custom_fields:
+      toggle-icon:
+        - justify-self: end
+      state:
+        - justify-self: start
+        - font-size: 16px
+        - font-weight: 500

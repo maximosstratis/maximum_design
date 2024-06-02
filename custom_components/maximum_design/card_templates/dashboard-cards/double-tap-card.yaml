@@ -1,0 +1,24 @@
+dashboard_double_tap_card:
+  type: custom:button-card
+  template:
+    - dashboard_base_card
+  tap_action:
+    action: none
+  hold_action:
+    action: none
+  double_tap_action:
+    action: toggle
+  custom_fields:
+    i1: |
+      [[[
+        return `<ha-icon icon="mdi:gesture-tap" style="width:16px; height: 16px;">`
+      ]]]
+    i2: |
+      [[[
+        return `<ha-icon icon="mdi:gesture-tap" style="width:16px; height: 16px;">`
+      ]]]
+
+  styles:
+    grid:
+      - grid-template-areas: '"i n i1 i2" "i l i1 i2"'
+      - grid-template-columns: 60px 1fr 20px 20px

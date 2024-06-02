@@ -1,0 +1,49 @@
+bubble_cover_card:
+  type: custom:button:card
+  template:
+    - bubble_base_card
+  tap_action:
+    action: more-info
+
+  styles:
+    grid:
+      - grid-template-areas: '"i n" "buttons buttons"'
+      - grid-template-columns: min-content 1fr
+    card:
+      - border-radius: 24px
+    custom_fields:
+      buttons:
+        - margin-top: 8px
+
+  custom_fields:
+    buttons:
+      card:
+        type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            template: bubble_filled_icon
+            entity: "[[[return entity.entity_id]]]"
+            icon: mdi:arrow-down
+            tap_action:
+              action: call-service
+              service: cover.close_cover
+              target:
+                entity_id: "[[[return entity.entity_id]]]"
+          - type: custom:button-card
+            template: bubble_filled_icon
+            entity: "[[[return entity.entity_id]]]"
+            icon: mdi:stop
+            tap_action:
+              action: call-service
+              service: cover.stop_cover
+              target:
+                entity_id: "[[[return entity.entity_id]]]"
+          - type: custom:button-card
+            template: bubble_filled_icon
+            entity: "[[[return entity.entity_id]]]"
+            icon: mdi:arrow-up
+            tap_action:
+              action: call-service
+              service: cover.open_cover
+              target:
+                entity_id: "[[[return entity.entity_id]]]"

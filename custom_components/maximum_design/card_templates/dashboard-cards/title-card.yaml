@@ -1,0 +1,10 @@
+dashboard_title_card:
+  type: custom:button-card
+  styles:
+    card:
+      - background: none
+      - box-shadow: none
+      - padding: 8px 16px
+    name:
+      - justify-self: start
+      - font-size: 22px

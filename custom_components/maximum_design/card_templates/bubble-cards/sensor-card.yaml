@@ -1,0 +1,12 @@
+bubble_sensor_card:
+  type: custom:button-card
+  template:
+    - bubble_base_card
+  show_state: true
+  tap_action:
+    action: more-info
+
+  styles:
+    grid:
+      - grid-template-areas: '"i n s"'
+      - grid-template-columns: min-content 1fr min-content

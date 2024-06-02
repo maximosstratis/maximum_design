@@ -1,0 +1,147 @@
+bubble_media_player_card:
+  type: custom:button-card
+  template:
+    - translation_engine
+
+  tap_action:
+    action: more-info
+
+  state:
+    - value: "off"
+      icon: mdi:audio-video-off
+      styles:
+        grid:
+          - grid-template-areas: '"i n source-select power"'
+          - grid-template-columns: min-content 1fr min-content 40px
+          - grid-template-rows: 1fr
+        custom_fields:
+          volume-state:
+            - display: none
+          volume:
+            - display: none
+          mute:
+            - display: none
+          volume_plus:
+            - display: none
+          volume_minus:
+            - display: none
+
+  custom_fields:
+    source: |
+      [[[
+        return entity.attributes.source;
+      ]]]
+    volume-state: "[[[return `${(entity.attributes.volume_level * 100).toFixed(1)}%`]]]"
+    mute:
+      card:
+        type: custom:button-card
+        template:
+          - bubble_hover_icon
+        entity: "[[[return entity.entity_id]]]"
+        icon: |
+          [[[
+            var is_muted = entity.attributes.is_volume_muted;
+            return is_muted ? "mdi:volume-off" : "mdi:volume-high";
+          ]]]
+        tap_action:
+          action: call-service
+          service: media_player.volume_mute
+          target:
+            entity_id: "[[[return entity.entity_id]]]"
+          data:
+            is_volume_muted: |
+              [[[
+                var is_muted = entity.attributes.is_volume_muted;
+                return !is_muted;
+              ]]]
+        styles:
+          card:
+            - transform: translate(-8px)
+    volume:
+      card:
+        type: custom:my-slider-v2
+        entity: "[[[return entity.entity_id]]]"
+        styles:
+          container:
+            - border-radius: 32px
+            - overflow: hidden
+          track:
+            - background: "var(--color-grey)"
+          progress:
+            - background: |
+                [[[
+                  var is_muted = entity.attributes.is_volume_muted;
+                  return is_muted ? "var(--color-grey)" : "var(--color-blue)";
+                ]]]
+          thumb:
+            - background: "transparent"
+    volume_plus:
+      card:
+        type: custom:button-card
+        template:
+          - bubble_hover_icon
+        entity: "[[[return entity.entity_id]]]"
+        icon: mdi:volume-plus
+        tap_action:
+          action: call-service
+          service: media_player.volume_up
+          target:
+            entity_id: "[[[return entity.entity_id]]]"
+    volume_minus:
+      card:
+        type: custom:button-card
+        template:
+          - bubble_hover_icon
+        entity: "[[[return entity.entity_id]]]"
+        icon: mdi:volume-minus
+        tap_action:
+          action: call-service
+          service: media_player.volume_down
+          target:
+            entity_id: "[[[return entity.entity_id]]]"
+    power:
+      card:
+        type: custom:button-card
+        template:
+          - bubble_hover_icon
+        entity: "[[[return entity.entity_id]]]"
+        icon: mdi:power
+        tap_action:
+          action: toggle
+
+  styles:
+    card:
+      - padding: 16px
+    grid:
+      - grid-template-areas: '"i n n volume_minus volume_plus power" "i source source volume_minus volume_plus power" ". mute volume volume volume volume-state"'
+      - grid-template-columns: min-content min-content 1fr min-content min-content 40px
+      - grid-template-rows: min-content min-content 1fr
+
+    name:
+      - justify-self: start
+      - font-size: 14px
+      - font-weight: 400
+      - color: black
+
+    img_cell:
+      - width: 52px
+      - height: 40px
+      - justify-self: center
+    icon:
+      - width: 24px
+      - color: black
+    custom_fields:
+      toggle-icon:
+        - justify-self: end
+      source:
+        - justify-self: start
+        - font-size: 14px
+        - font-weight: 400
+        - color: black
+        - opacity: "0.6"
+      volume-state:
+        - justify-self: start
+        - font-size: 14px
+        - font-weight: 400
+        - color: black
+        - padding-left: 8px

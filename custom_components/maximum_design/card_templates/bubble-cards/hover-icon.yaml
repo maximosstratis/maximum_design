@@ -1,0 +1,23 @@
+bubble_hover_icon:
+  extra_styles: |
+    [[[
+      return `#icon:hover {
+        background: var(--color-grey);
+      }`
+    ]]]
+  styles:
+    card:
+      - box-shadow: none
+      - overflow: hidden
+      - border-radius: 100px
+    img_cell:
+      - overflow: visible
+    icon:
+      - width: 24px
+      - height: 24px
+      - color: black
+      - padding: 8px
+      - margin: 0
+      - border-radius: 100px
+    name:
+      - display: none

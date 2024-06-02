@@ -1,0 +1,57 @@
+bubble_timer_card:
+  type: custom:button-card
+  template:
+    - bubble_base_card
+  label: |
+    [[[
+      if (entity.state != "active") {
+        return variables.translation_state;
+      }
+      return variables.remaining_time
+    ]]]
+  show_label: true
+  tap_action:
+    action: more-info
+  state:
+    - value: "active"
+      styles:
+        card:
+          - background: "[[[return variables.light_blue]]]"
+
+  variables:
+    remaining_time: |
+      [[[
+        var finishing_time = new Date(entity.attributes.finishes_at);
+        var current_time = Date.now();
+        var remaining_seconds = (finishing_time.getTime() - current_time) / 1000;
+
+        var toHHMMSS = (secs) => {
+            var sec_num = parseInt(secs, 10)
+            var hours   = Math.floor(sec_num / 3600)
+            var minutes = Math.floor(sec_num / 60) % 60
+            var seconds = sec_num % 60
+
+            return [hours,minutes,seconds]
+                .map(v => v < 10 ? "0" + v : v)
+                .filter((v,i) => v !== "00" || i > 0)
+                .join(":")
+        }
+
+        return toHHMMSS(remaining_seconds);
+      ]]]
+
+  styles:
+    grid:
+      - grid-template-areas: '"i n l"'
+      - grid-template-columns: min-content 1fr min-content
+
+bubble_timer_starter_card:
+  type: custom:button-card
+  template: bubble_base_card
+  tap_action:
+    action: call-service
+    service: timer.start
+    target:
+      entity_id: "[[[return entity.entity_id]]]"
+    data:
+      duration: "[[[return variables.duration]]]"

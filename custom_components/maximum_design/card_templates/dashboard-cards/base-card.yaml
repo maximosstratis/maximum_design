@@ -1,0 +1,65 @@
+dashboard_base_card:
+  type: custom:button-card
+  template:
+    - translation_engine
+  show_state: false
+  show_label: true
+  state:
+    - value: "on"
+      styles:
+        img_cell:
+          - background: |
+              [[[
+                var type = entity.entity_id.split('.')[0];
+                if (type == 'light') {
+                  return "var(--color-yellow)";
+                }
+                return "var(--color-blue)";
+              ]]]
+
+  label: |
+    [[[
+      var r = [];
+      if (entity != null) r.push(variables.translation_state);
+      if (variables.sensors) {
+        for (var s of variables.sensors) {
+          if (states[s]) r.push(helpers.localize(states[s]));
+        }
+      }
+      return r.join(' • ');
+    ]]]
+
+  triggers_update: all
+
+  styles:
+    grid:
+      - grid-template-areas: '"i n" "i l"'
+      - grid-template-columns: 60px 1fr
+    card:
+      - margin: 0
+      - border-radius: 50px
+      - padding: 12px 14px 12px 8px
+      - background: var(--card-background-color)
+    img_cell:
+      - background: "var(--color-green)"
+      - border-radius: 100px
+      - width: 50px
+      - height: 50px
+    icon:
+      - width: 24px
+      - color: black
+    name:
+      - justify-self: start
+      - font-size: 14px
+      - font-weight: 500
+      - padding-left: 10px
+    state:
+      - justify-self: start
+      - font-size: 14px
+      - padding-left: 10px
+      - opacity: "0.7"
+    label:
+      - justify-self: start
+      - font-size: 14px
+      - padding-left: 10px
+      - opacity: "0.7"

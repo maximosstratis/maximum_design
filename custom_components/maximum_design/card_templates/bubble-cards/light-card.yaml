@@ -1,0 +1,7 @@
+bubble_light_card:
+  type: custom:button:card
+  icon: mdi:lightbulb-variant
+  template:
+    - bubble_base_card
+  variables:
+    state_color: "var(--color-yellow)"

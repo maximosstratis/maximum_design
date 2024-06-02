@@ -1,0 +1,76 @@
+bubble_dimming_card:
+  type: custom:button-card
+  template:
+    - translation_engine
+    - bubble_base_card
+  styles:
+    icon:
+      - z-index: 10
+    img_cell:
+      - z-index: 10
+    name:
+      - z-index: 10
+    grid:
+      - grid-template-areas: '"i n" "i brightness_state"'
+      - grid-template-columns: min-content min-content 1fr
+    custom_fields:
+      brightness_state:
+        - justify-self: start
+        - z-index: 10
+        - font-size: 12px
+        - font-weight: 500
+        - color: black
+        - opacity: "0.6"
+        - padding: 2px 0px
+
+  state:
+    - value: "off"
+      styles:
+        custom_fields:
+          brightness_state:
+            - display: none
+
+  variables:
+    current_color: |
+      [[[
+        if (entity.attributes.color_mode === "hs") {
+          return `rgb(${entity.attributes.rgb_color})`;
+        }
+        return null;
+      ]]]
+
+  custom_fields:
+    brightness_state: |
+      [[[
+        var entity_name = variables.name ?? entity.attributes.friendly_name;
+        var brightness =  `${(entity.attributes.brightness * 100 / 255).toFixed(0)}%`;
+        return brightness;
+      ]]]
+    brightness:
+      card:
+        type: custom:my-slider-v2
+        entity: "[[[return entity.entity_id]]]"
+        styles:
+          container:
+            - border-radius: 100px
+            - overflow: visible
+            - width: "100%"
+          card:
+            - height: "100%"
+            - background: "var(--color-grey)"
+            - position: absolute
+            - top: 0px
+            - left: 0px
+            - width: 100%
+            - border-radius: 0px
+            - z-index: 1
+          track:
+            - overflow: visible
+            - background: none
+          progress:
+            - background: |
+                [[[
+                  return variables.current_color ?? "var(--color-yellow)";
+                ]]]
+          thumb:
+            - background: "transparent"

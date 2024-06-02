@@ -1,0 +1,74 @@
+dashboard_room_card:
+  type: custom:button-card
+  template:
+    - dashboard_popup_card
+
+  variables:
+    is_active: |
+      [[[
+        if (!variables.area_id) return false;
+        let entities = Object.values(hass.entities).filter(
+          (ent) => ent.area_id === variables.area_id
+        ).map(ent => ent.entity_id);
+
+        let not_active_states = ['disarmed','off','closed','not_home','standby','idle','docked','unknown','unavailable','paused']
+        return entities.some(ent => !not_active_states.includes(states[ent].state));
+      ]]]
+
+  double_tap_action:
+    action: '[[[return variables.area_id ? "call-service" : "none"]]]'
+    service: |
+      [[[
+        let entities = Object.values(hass.entities).filter(
+          (ent) => ent.area_id === variables.area_id
+        ).map(ent => ent.entity_id);
+        if (entities.some(ent => states[ent].state == "on")) {
+          return "light.turn_off";
+        }
+        
+        return "light.turn_on";
+
+      ]]]
+    target:
+      area_id: "[[[return variables.area_id]]]"
+
+  label: |
+    [[[
+      if (!variables.area_id) return null;
+      let entities = Object.values(hass.entities).filter(
+        (ent) => ent.area_id === variables.area_id
+      ).map(ent => ent.entity_id);
+
+      let not_active_states = ['disarmed','off','closed','not_home','standby','idle','docked','unknown','unavailable','paused']
+      var active_entities = entities.filter(ent => !not_active_states.includes(states[ent].state));
+
+      var active_lights = active_entities.filter(ent => ent.startsWith('light.')).length
+      var active_devices = active_entities.length - active_lights
+
+      let getStat = (icon, count) => {
+        if (count == 0) return null;
+        return html`
+          <div style="display:flex;align-items:center;gap:4px">
+            <ha-icon icon="${icon}" style="width: 20px; height: 20px;">
+            </ha-icon>
+            ${count}
+          </div>
+        `
+      }
+      return html`
+        <div style="display:flex;align-items:center;gap:8px">
+          ${variables.sensors?.map(ent => html`<span>${helpers.localize(states[ent])}</span>`)}
+          ${getStat("mdi:lightbulb-group", active_lights)}
+          ${getStat("mdi:cellphone-link", active_devices)}
+        </div>`;
+    ]]]
+
+  styles:
+    img_cell:
+      - background: |
+          [[[
+            if (variables.is_active)
+              return "var(--color-yellow)";
+
+            return "var(--color-green)";
+          ]]]

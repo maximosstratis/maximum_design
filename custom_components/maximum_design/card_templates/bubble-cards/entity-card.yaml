@@ -1,0 +1,6 @@
+bubble_entity_card:
+  type: custom:button:card
+  template:
+    - bubble_base_card
+  variables:
+    state_color: "var(--color-blue)"
